@@ -366,3 +366,5 @@ FodyWeavers.xsd
 *.wav
 /screen geter/temp.jpg
 *.jpeg
+/screen geter/.jpeg
+/screen geter/a.jpg

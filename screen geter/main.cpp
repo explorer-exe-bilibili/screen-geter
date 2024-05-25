@@ -1,4 +1,72 @@
+//#include <opencv2/core.hpp> 
+//#include <opencv2/imgcodecs.hpp> 
+//#include <opencv2/highgui.hpp>
+//#include <opencv2/opencv.hpp> 
+//#include <iostream> 
+//
+//using namespace cv;
+//using namespace std;
+//
+//int main()
+//{
+//    //两个相机同时打开，初始化并分配内存以从摄像机加载视频流，分辨率为320*240、1280*720（延迟太大）、720*480 
+//    //initialize and allocate memory to load the video stream from camera 
+//    VideoCapture camera0(0);
+//    camera0.set(CAP_PROP_FRAME_WIDTH, 720);
+//    camera0.set(CAP_PROP_FRAME_HEIGHT, 480);
+//
+//    VideoCapture camera1(1);
+//    camera1.set(CAP_PROP_FRAME_WIDTH, 720);
+//    camera1.set(CAP_PROP_FRAME_HEIGHT, 480);
+//
+//    if (!camera0.isOpened()) return 1;
+//    if (!camera1.isOpened()) return 1;
+//
+//    int a = 1;
+//    int f = 1;
+//    while (true) {
+//        //依次抓取和检索视频的每个帧 
+//        //grab and retrieve each frames of the video sequentially 
+//        Mat3b frame0;
+//        camera0 >> frame0;
+//        Mat3b frame1;
+//        camera1 >> frame1;
+//
+//        //顺时针旋转摄像头180° 
+//        //flip(frame1, frame1, -1); 
+//        //flip(frame0, frame0, -1); 
+//
+//        imshow("Video0", frame0);
+//        imshow("Video1", frame1);
+//        //std::cout << frame1.rows() << std::endl; 
+//        //wait for 40 milliseconds 
+//
+//        int c = waitKey(20);
+//        //exit the loop if user press "Esc" key (ASCII value of "Esc" is 27)
+//
+//        if (27 == char(c)) break;
+//
+//        int b = waitKey(20);
+//        if (32 == char(b)) {
+//            imwrite("C:\\Users\\11815\\Desktop\\calib_example1\\" + to_string(a++) + ".tif", frame1);
+//        }
+//
+//        int d = waitKey(20);
+//        if (13 == char(d))
+//        {
+//            imwrite("C:\\Users\\11815\\Desktop\\calib_example2\\" + to_string(f++) + ".tif", frame0);
+//        }
+//    }
+//    return 0;
+//}
+//
+
+
+
+
 #define  _CRT_SECURE_NO_WARNINGS
+#include <Windows.h>
+#include <gdiplus.h>
 #include <string>
 #include <time.h>
 #include <iostream>
@@ -37,10 +105,10 @@ LRESULT CALLBACK LowLevelKeyboardProc(
 	}
 	// 将消息传递给钩子链中的下一个钩子
 	return CallNextHookEx(NULL, nCode, wParam, lParam);
-}
+	}
 
 int main(int argc, CHAR * argv[])
-{
+		{
 	// 安装钩子
 	keyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL,	LowLevelKeyboardProc,GetModuleHandleA(NULL),NULL);
 	if (keyboardHook == 0) { cout << "挂钩键盘失败" << endl; return -1; }
@@ -48,7 +116,7 @@ int main(int argc, CHAR * argv[])
 	thread p(amain);
 	p.detach();
 	while (runing)
-	{
+			{
 		// 如果消息队列中有消息
 		if(PeekMessageA(&msg,0,0,0,PM_REMOVE)){
 			TranslateMessage(&msg);
@@ -57,12 +125,14 @@ int main(int argc, CHAR * argv[])
 		else
 			Sleep(1);
 
+		free(pImageCodecInfo);
+		return -1;  // Failure
 	}
 	// 删除钩子
 	UnhookWindowsHookEx(keyboardHook);
 
 	return 0;
-}
+	}
 
 
 
@@ -79,6 +149,7 @@ int amain()
 		careamt.detach();
 	}
 	HDC hdcScreen = ::GetDC(NULL);
+	//HDC hdcScreen = CreateDC("DISPLAY", NULL, NULL, NULL);
 	int nBitPerPixel = GetDeviceCaps(hdcScreen, BITSPIXEL);
 	int nWidth = GetDeviceCaps(hdcScreen, HORZRES);
 	int nHeight = GetDeviceCaps(hdcScreen, VERTRES);
